@@ -2,7 +2,18 @@
 import { useState, useEffect } from "react";
 import { NotesContext } from "./notesContext";
 
-interface Note {
+export interface NotesContextType {
+  notes: Note[];
+  addNote: (note: Note) => void; // Add missing interface property
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>; // Add missing interface property
+  searchNotes: (query: string) => void;
+  expandText: (id: Date) => void;
+  deleteNotes: (id: Date) => void;
+  editToggle: (id: Date) => void;
+  saveEdit: (id: Date, newNote: string) => void;
+}
+
+export interface Note {
   note: string;
   now: Date;
   expanded: boolean;

@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import { NotesProvider } from "./context/NotesProvider.tsx";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="dark">

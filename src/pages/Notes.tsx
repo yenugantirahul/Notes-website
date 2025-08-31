@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { MdEditSquare, MdDelete } from "react-icons/md";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import type { Note } from "@/context/NotesProvider"; // Fix import path
 
 const Notes = () => {
   const { notes, searchNotes } = useContext(NotesContext);
@@ -20,14 +21,14 @@ const Notes = () => {
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
-            searchNotes(e.target.value); // ✅ live search while typing
+            searchNotes(e.target.value);
           }}
         />
         <Button
           className="h-[50px] cursor-pointer"
           type="submit"
           variant="outline"
-          onClick={() => searchNotes(search)} // ✅ search on button click
+          onClick={() => searchNotes(search)}
         >
           Search
         </Button>
@@ -36,14 +37,7 @@ const Notes = () => {
       <div className="grid mt-4 px-5 sm:grid-cols-2 lg:grid-cols-2 gap-10">
         {notes.length > 0 ? (
           notes.map((note, i) => (
-            <NoteCard
-              onEdit={note.onEdit}
-              key={note.now.toString()}
-              note={note.note}
-              isExpanded={note.expanded}
-              now={note.now}
-              index={i + 1}
-            />
+            <NoteCard key={note.now.toString()} {...note} index={i + 1} />
           ))
         ) : (
           <div className="text-center w-full mt-10 text-gray-500 text-lg">
@@ -55,19 +49,11 @@ const Notes = () => {
   );
 };
 
-const NoteCard = ({
-  onEdit,
-  note,
-  index,
-  now,
-  isExpanded,
-}: {
-  onEdit: boolean;
-  note: string;
+interface NoteCardProps extends Note {
   index: number;
-  now: Date;
-  isExpanded: boolean;
-}) => {
+}
+
+const NoteCard = ({ onEdit, note, index, now, expanded }: NoteCardProps) => {
   const { expandText, deleteNotes, editToggle, saveEdit } =
     useContext(NotesContext);
   const [editNote, setEditNote] = useState<string>(note);
@@ -95,7 +81,7 @@ const NoteCard = ({
       ) : (
         <CardContent
           className={`text-sm transition-all duration-300 ease-in-out ${
-            isExpanded ? "" : "line-clamp-4"
+            expanded ? "" : "line-clamp-4"
           }`}
         >
           {note}
@@ -121,7 +107,7 @@ const NoteCard = ({
           className="mt-2 text-white bg-gray-700 cursor-pointer"
           onClick={() => expandText(now)}
         >
-          {isExpanded ? "Show Less" : "Show More"}
+          {expanded ? "Show Less" : "Show More"}
         </Button>
       )}
     </Card>

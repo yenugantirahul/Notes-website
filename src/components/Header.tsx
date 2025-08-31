@@ -1,4 +1,3 @@
-import React from "react";
 import { FaMoon, FaNoteSticky, FaSun } from "react-icons/fa6";
 import { Button } from "./ui/button";
 import { useTheme } from "./theme-provider";
